@@ -2,7 +2,7 @@
 
 from ansible.module_utils.basic import *
 from ansible.module_utils.urls import *
-
+import urllib3
 def spectrum_auth(module,username,password,config_ip):
 	
 	headers = {
@@ -35,7 +35,7 @@ def main():
 	username = module.params['api_username']		
 	password = module.params['api_password']
 	config_ip = module.params['storage_config_ip']
-	
+	urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 	rc, auth_content, error = spectrum_auth(module, username,password,config_ip)
 	if rc==0:
 		module.exit_json(changed = True, meta = auth_token)
