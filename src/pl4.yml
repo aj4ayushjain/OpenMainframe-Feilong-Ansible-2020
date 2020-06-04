@@ -1,0 +1,12 @@
+- hosts: localhost
+  vars:
+     config_ip : "10.100.0.222"      	
+     username : "xxx"
+     password : "xxx"
+  tasks:
+    - name: Authentication token check
+      lshost:
+        api_username: "{{ username }}"
+        api_password: "{{ password }}"
+        storage_config_ip: "{{ config_ip }}"
+
