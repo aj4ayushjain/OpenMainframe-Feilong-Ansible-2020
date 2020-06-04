@@ -13,7 +13,7 @@ def spectrum_auth(module,username,password,config_ip):
 	url = 'https://{0}/rest/auth'.format(config_ip)
 	
 	try:
-		response = fetch_url (module, url, headers=headers,method ='POST')
+		response = fetch_url (module, url, headers=headers,method ='POST',verify_certs=False)
 		data = json.loads(response.read())
 		if data['status']['message']=='Authentication failed':
 			return 1,None, "Authentication failed"	
