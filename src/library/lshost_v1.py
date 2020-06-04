@@ -39,9 +39,9 @@ def main():
 	
 	rc, auth_token, error = spectrum_auth(username,password,config_ip)
 	if rc==0:
-		module.exit_json(changed = True, meta = result)
+		module.exit_json(changed = True, meta = auth_token)
 	else:
-		module.fail_json(msg = 'Error in repo', meta = result)
+		module.fail_json(msg = 'Error in repo', meta = error)
 
 if __name__ == '__main__':
 	main()
