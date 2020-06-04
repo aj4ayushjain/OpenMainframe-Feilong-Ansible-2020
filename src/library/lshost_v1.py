@@ -2,10 +2,9 @@
 
 from ansible.module_utils.basic import *
 from ansible.module_utils.urls import *
-import json
-def spectrum_auth(username,password,config_ip):
+
+def spectrum_auth(module,username,password,config_ip):
 	
-	request_type = 'POST'
 	headers = {
 			"X-Auth-Username":username,
 			"X-Auth-Password":password,
@@ -14,7 +13,7 @@ def spectrum_auth(username,password,config_ip):
 	url = 'https://{0}/rest/auth'.format(config_ip)
 	
 	try:
-		response = open_url (url,headers=headers,method = request_type,verify=False)
+		response = fetch_url (module, url, headers=headers,method ='POST')
 		data = json.loads(response.read())
 		if data['status']['message']=='Authentication failed':
 			return 1,None, "Authentication failed"	
@@ -37,7 +36,7 @@ def main():
 	password = module.params['api_password']
 	config_ip = module.params['storage_config_ip']
 	
-	rc, auth_token, error = spectrum_auth(username,password,config_ip)
+	rc, auth_content, error = spectrum_auth(module, username,password,config_ip)
 	if rc==0:
 		module.exit_json(changed = True, meta = auth_token)
 	else:
