@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python -W ignore
 
 from ansible.module_utils.basic import *
 from ansible.module_utils.urls import *
@@ -14,10 +14,10 @@ def spectrum_auth(module,username,password,config_ip):
 	try:
 		response = open_url (url, headers=headers,method ='POST',validate_certs=False)
 		data = json.loads(response.read())
-		if data['status']['message']=='Authentication failed':
-			return 1,None, "Authentication failed"	
-		else:
+		if data['status']=='400':
 			auth_content = data
+		else:
+			return 1, None, "Authentication failed:" 
 
 	except Exception as e:
 		return 1, None, e
